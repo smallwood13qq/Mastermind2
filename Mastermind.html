@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastermind Game</title>
+  <style>
+    header {
+      caret-color: transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -400%);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 30px;
+      color: #333;
+    }
+    body {
+      caret-color: transparent;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .board {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .row {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 10px;
+    }
+    .row.mini {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 5px;
+    }
+    .slot {
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.slot.display {
+  border: 2px solid black;
+}
+
+.slot.int {
+}
+.slot.answer {
+}
+    .circle {
+      width: 5px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid black;
+    }
+    .color {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .color:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+}
+    .button {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .button:hover {
+  color: blue;
+  text-decoration: underline;
+}
+    .message {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+   <h1>Mastermind</h1>
+  </header>
+  <div class="board">
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+      <div class="slot sub"></div>
+    </div>
+    <div class="row">
+      <div class="slot int"></div>
+      <div class="slot int"></div>
+      <div class="slot int"></div>
+      <div class="slot int"></div>
+    </div>
+    <div class="row">
+      <div class="color" style="background-color: red;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: green;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: blue;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: yellow;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: brown;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: orange;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: black;" onclick="game.getColor(this)"></div>
+      <div class="color" style="background-color: white;" onclick="game.getColor(this)"></div>
+    </div>
+    <div class="button" onclick="game.check()">Check</div>
+    <div class="button" onclick="game.clear()">Clear Guess</div>
+    <div class="button" onclick="game.clear_all()">Reset</div>
+    <div class="row">
+      <div class="slot answer"></div>
+      <div class="slot answer"></div>
+      <div class="slot answer"></div>
+      <div class="slot answer"></div>
+    </div>
+    <div class="message"></div>
+  </div>
+<script>
+class Game {
+  //initiates game and variables
+  constructor() {
+    this.seq = [];
+    this.index = 0;
+    this.integrate = new Integration();
+    this.board = new Board();
+    this.code = this.integrate.init_code(4)
+  }
+
+  getColor(element) {
+    const color = element.style.backgroundColor;
+
+    if (this.seq.includes(color)) {
+        this.board.Temp_Message("You already used this color!",800);
+        return;
+    }
+
+    if (this.index < 4) {
+        this.index += 1;
+        const slot = document.querySelector('.slot.int:not(.color-selected)');
+        slot.style.backgroundColor = color;
+        slot.classList.add('color-selected');
+        this.seq.push(color);
+    }
+}
+
+
+  clear() {
+const slots = document.querySelectorAll('.slot.int');
+    slots.forEach(slot => {
+      slot.style.backgroundColor = '';
+      slot.classList.remove('color-selected');
+    });
+    this.seq = [];
+    this.index = 0;
+  }
+  check() {
+    this.board.check(this.seq)
+
+   var green = this.integrate.align(this.code,this.seq);
+   var yellow = this.integrate.compare(this.code,this.seq) - green;
+    this.clear()
+
+//turn into a function
+this.board.updateCircles(green,yellow)
+//
+
+if (green === 4){
+this.board.Message('You won! Congradulations')
+this.index = 20;
+}
+
+else if (document.querySelector('.slot.sub:not(.color-selected)') === null){
+this.board.display_answer(this.code);
+this.board.Message('You Lose :(')
+  }
+
+}
+
+clear_all(){
+  this.clear()
+  this.board.Message('')
+const elements = document.querySelectorAll('.slot, .circle');
+
+elements.forEach(element => {
+    element.style.backgroundColor = '';
+    element.classList.remove('color-selected');
+});
+
+}
+
+}
+
+class Board {
+  check(seq){
+for (let i = 0; i < 4; i++) {
+      const slot2 = document.querySelector('.slot.sub:not(.color-selected)');
+      const color = seq[i];
+      slot2.style.backgroundColor = color;
+      slot2.classList.add('color-selected');
+    }
+}
+updateCircles(green, yellow) {
+    const colors = [
+      { color: 'green', count: green },
+      { color: 'yellow', count: yellow },
+      { color: '#f0f0f0', count: 4 - (green + yellow) }
+    ];
+
+    let count = 0;
+
+    for (const { color, count: colorCount } of colors) {
+      for (let i = 0; i < colorCount; i++) {
+        const circle = document.querySelector('.circle:not(.color-selected)');
+        if (circle) {
+          circle.style.backgroundColor = color;
+          circle.classList.add('color-selected');
+          count++;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
+display_answer(code){
+for (let i = 0; i < 4; i++) {
+      const slot2 = document.querySelector('.slot.answer:not(.color-selected)');
+      const color = code[i];
+      slot2.style.backgroundColor = color;
+      slot2.classList.add('color-selected');
+    }
+}
+Message(message) {
+    const messageElement = document.querySelector('.message');
+    messageElement.textContent = message;
+  }
+Temp_Message(message, time) {
+    const messageElement = document.querySelector('.message');
+    messageElement.textContent = message;
+    setTimeout(() => {
+        messageElement.textContent = '';
+    }, time);
+}
+
+}
+
+class Integration {
+init_code(length) {
+  const array = ['red','green','blue','yellow','brown','orange','black','white'];
+  return this.shuffle(array).slice(0, length);
+}
+
+// Fisher-Yates shuffle algorithm
+shuffle(array) {
+for (var i = array.length - 1; i > 0; i--) {
+    var pos = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[pos];
+    array[pos] = temp;
+}
+return array;
+}
+
+align(arr1,arr2){
+var num = 0;
+  for (var i=0; i<arr1.length;i++){
+    if (arr1[i] === arr2[i]){
+      num++;
+    }
+  }
+return num;
+}
+
+compare(arr1, arr2) {
+    let num = 0;
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1.includes(arr2[i])) {
+        num++;
+      }
+    }
+    return num;
+  }
+}
+
+
+const game = new Game();
+</script>
+</body>
+</html>
