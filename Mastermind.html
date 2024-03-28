@@ -207,6 +207,7 @@ class Game {
     this.board = new Board();
     this.code = this.integrate.init_code(4)
   }
+//: Retrieves the color of an element, checks if it has already been used, and either adds color to the slot, or tells the player to pick a different color.
 
   getColor(element) {
     const color = element.style.backgroundColor;
@@ -225,7 +226,7 @@ class Game {
     }
 }
 
-
+//: Clears the game board by resetting slot colors and selections of the guess slot
   clear() {
 const slots = document.querySelectorAll('.slot.int');
     slots.forEach(slot => {
@@ -235,6 +236,8 @@ const slots = document.querySelectorAll('.slot.int');
     this.seq = [];
     this.index = 0;
   }
+  //: Checks the player's sequence, updates feedback circles, and handles game end conditions.
+
   check() {
     this.board.check(this.seq)
 
@@ -242,7 +245,6 @@ const slots = document.querySelectorAll('.slot.int');
    var yellow = this.integrate.compare(this.code,this.seq) - green;
     this.clear()
 
-//turn into a function
 this.board.updateCircles(green,yellow)
 //
 
@@ -257,7 +259,7 @@ this.board.Message('You Lose :(')
   }
 
 }
-
+// Clears all slots and circles, as well as any displayed messages
 clear_all(){
   this.clear()
   this.board.Message('')
@@ -273,6 +275,7 @@ elements.forEach(element => {
 }
 
 class Board {
+  //Checks the player's sequence
   check(seq){
 for (let i = 0; i < 4; i++) {
       const slot2 = document.querySelector('.slot.sub:not(.color-selected)');
@@ -281,6 +284,7 @@ for (let i = 0; i < 4; i++) {
       slot2.classList.add('color-selected');
     }
 }
+  //Adds colors to the circles based on the number of correct guesses
 updateCircles(green, yellow) {
     const colors = [
       { color: 'green', count: green },
@@ -303,7 +307,7 @@ updateCircles(green, yellow) {
       }
     }
   }
-
+// Displays the correct code in the answer slots
 display_answer(code){
 for (let i = 0; i < 4; i++) {
       const slot2 = document.querySelector('.slot.answer:not(.color-selected)');
@@ -312,10 +316,12 @@ for (let i = 0; i < 4; i++) {
       slot2.classList.add('color-selected');
     }
 }
+  //Displays a message on the board
 Message(message) {
     const messageElement = document.querySelector('.message');
     messageElement.textContent = message;
   }
+  //Displays a temporary message for a specified duration
 Temp_Message(message, time) {
     const messageElement = document.querySelector('.message');
     messageElement.textContent = message;
@@ -325,7 +331,7 @@ Temp_Message(message, time) {
 }
 
 }
-
+//: Initializes the code for the game.
 class Integration {
 init_code(length) {
   const array = ['red','green','blue','yellow','brown','orange','black','white'];
@@ -333,6 +339,7 @@ init_code(length) {
 }
 
 // Fisher-Yates shuffle algorithm
+  //Shuffles a given array
 shuffle(array) {
 for (var i = array.length - 1; i > 0; i--) {
     var pos = Math.floor(Math.random() * (i + 1));
@@ -342,7 +349,7 @@ for (var i = array.length - 1; i > 0; i--) {
 }
 return array;
 }
-
+// Calculates the number of shared color positions in each array
 align(arr1,arr2){
 var num = 0;
   for (var i=0; i<arr1.length;i++){
@@ -352,7 +359,7 @@ var num = 0;
   }
 return num;
 }
-
+//Counts the number of elements shared between each array
 compare(arr1, arr2) {
     let num = 0;
     for (let i = 0; i < arr1.length; i++) {
